@@ -34,17 +34,14 @@ function createSession(client_id) {
         });
 
         client.on('qr', (qr) => {
-            console.log('QR RECEIVED', qr);
             io.to(client_id).emit('qr', qr);
         });
 
         client.on('loading_screen', (status) => {
-            console.log('LOADING SCREEN', status);
             io.to(client_id).emit('loading_screen', true);
         });
 
         client.on('authenticated', (session) => {
-            console.log('AUTHENTICATED', session);
             io.to(client_id).emit('authenticated', true);
         });
 
@@ -58,13 +55,11 @@ function createSession(client_id) {
         });
 
         client.on('ready', () => {
-            console.log('READY');
             sessions[client_id] = client;
             io.to(client_id).emit('ready', true);
         });
 
         client.on('auth_failure', msg => {
-            console.error('AUTHENTICATION FAILURE', msg);
         });
 
         client.on('disconnected', (reason) => {
@@ -73,7 +68,8 @@ function createSession(client_id) {
         });
 
         client.initialize().then(r => {
-            console.log('INITIALIZED');
+        }).catch(err => {
+            console.log(err);
         });
     } catch (e) {
         console.log(e);
